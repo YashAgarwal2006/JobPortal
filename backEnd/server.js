@@ -3,7 +3,10 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
+//routes
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const companyRoutes = require("./routes/companyRoutes");
 const session = require("express-session");
 
 const app = express();
@@ -23,6 +26,8 @@ app.use(session({
 }))
 
 app.use("/auth",authRoutes);
+app.use("/user",userRoutes);
+app.use("/company",companyRoutes);
 
 app.use(cors());
 

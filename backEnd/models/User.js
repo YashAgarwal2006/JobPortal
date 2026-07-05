@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     bio : {type:String},
     skills :{type:[String],default:[]},
     resume : {type:String},
-    company:{type:moongoose.Schema.Types.ObjectId,ref:"Company"},
+    company:{type:mongoose.Schema.Types.ObjectId,ref:"Company"},
 },{
     timestamps:true
 });

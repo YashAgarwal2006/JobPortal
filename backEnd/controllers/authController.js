@@ -179,8 +179,8 @@ const login = async(req,res)=>{
 }
 
 const logout = async(req,res)=>{
-    if(!req.session){
-        return res.status(400).json({
+    if(!req.session.user){
+        return res.status(401).json({
             success:false,
             message:"No active session found"
         });
@@ -190,7 +190,7 @@ const logout = async(req,res)=>{
             return res.status(500).json({
                 success:false,
                 message:"Logout failed",
-                error:err.message
+                error:"Logout failed"
             });
         }
         res.clearCookie("connect.sid");
