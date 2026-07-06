@@ -7,6 +7,7 @@ const port = process.env.PORT || 5000;
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const companyRoutes = require("./routes/companyRoutes");
+const jobRoutes = require("./routes/jobRoutes");
 const session = require("express-session");
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(session({
 app.use("/auth",authRoutes);
 app.use("/user",userRoutes);
 app.use("/company",companyRoutes);
+app.use("/job",jobRoutes);
 
 app.use(cors());
 

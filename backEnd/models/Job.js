@@ -13,12 +13,12 @@ const JobSchema = new mongoose.Schema({
     },required:true},
     status:{type:String,enum:{
         values:["open","closed"]
-    },required:true},
+    },required:true,default:"open"},
     company:{type:mongoose.Schema.Types.ObjectId,ref:"Company",required:true},
     postedBy:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true},
     workMode:{type:String,enum:{
         values:["remote","hybrid","onsite"]
-    },required:true}
+    },required:true,default:"onsite"}
 },{
     timestamps:true
 });
