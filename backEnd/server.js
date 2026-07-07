@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const companyRoutes = require("./routes/companyRoutes");
 const jobRoutes = require("./routes/jobRoutes");
+const applicationRoutes = require("./routes/applicationRoutes");
 const session = require("express-session");
 
 const app = express();
@@ -30,6 +31,7 @@ app.use("/auth",authRoutes);
 app.use("/user",userRoutes);
 app.use("/company",companyRoutes);
 app.use("/job",jobRoutes);
+app.use("/application",applicationRoutes);
 
 app.use(cors());
 

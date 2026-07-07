@@ -505,4 +505,4 @@ const getAllJobs=async(req,res)=>{
 }
 
 
-module.exports = {postJob,getMyJobs,getJobById,updateJobById,deleteJobById};
+module.exports = {postJob,getMyJobs,getJobById,updateJobById,deleteJobById,getAllJobs};

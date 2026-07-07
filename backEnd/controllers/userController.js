@@ -66,7 +66,8 @@ const updateProfile=async(req,res)=>{
         });
     }
     //check if no updates
-    if(!fullName && !phoneNumber && !bio && !skills && !profilePhoto && !resume){
+    if(fullName === undefined && phoneNumber === undefined && bio === undefined &&
+    skills === undefined && profilePhoto === undefined && resume === undefined){
         return res.status(400).json({
             success:false,
             message:"Nothing to update"
@@ -127,6 +128,7 @@ const updateProfile=async(req,res)=>{
             }
         })
     }catch(err){
+        console.log(err);
         return res.status(500).json({
             success:false,
             message:"Internal Server Error"

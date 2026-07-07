@@ -1,4 +1,6 @@
 const Company = require("../models/Company");
+const Job = require("../models/Job");
+const Application = require("../models/Applications");
 
 const getMyCompany = async(req,res)=>{
     const userId = req.user.userId;
@@ -159,4 +161,60 @@ const toggleStatus=async(req,res)=>{
     }
 }
 
-module.exports = {getMyCompany,updateCompanyProfile,toggleStatus};
+const deleteCompany=async(req,res)=>{
+    const companyId = req.params.companyId;
+    //validate objectId
+    if(!mongoose.Types.ObjectId.isValid(companyId)){
+        return res.status(400).json({
+            success:false,
+            message:"Invalid Company id"
+        })
+    }
+
+    try{
+        const myCompany = await Company.findById(companyId);
+        //check if company found
+        if(!myCompany){
+            return res.status(404).json({
+                success:false,
+                message:"Company not found"
+            });
+        }
+        //verify recruiter owns the company
+        if(myCompany.createdBy.toString() !== req.user.userId){
+            return res.status(403).json({
+                success:false,
+                message:"You are not authorized to delete this company"
+            });
+        }
+        //fetch all jobs of this company
+        const allJobs = await Job.find({company:companyId});
+        //check if any job has status = open
+        for (const job of allJobs) {
+            if (job.status==="open"){
+                return res.status(409).json({
+                    success:false,
+                    message:"Cannot delete company while open jobs exist"
+                });
+            }
+        }
+        //delete all applications related to the closed jobs
+        const jobIds = allJobs.map(job=>job._id);
+        //delete all related applications and jobs
+        await Application.deleteMany({job:{$in:jobIds}});
+        await Job.deleteMany({company:companyId});
+        //delete company
+        await myCompany.deleteOne();
+        return res.status(200).json({
+            success:true,
+            message:"Company successfully deleted"
+        });
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            success:false,
+            message:"Internal server error"
+        });
+    }
+}
+module.exports = {getMyCompany,updateCompanyProfile,toggleStatus,deleteCompany};

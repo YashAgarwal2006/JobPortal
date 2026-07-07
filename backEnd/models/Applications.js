@@ -4,7 +4,7 @@ const ApplicationSchema = new mongoose.Schema({
     applicant:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true},
     job:{type:mongoose.Schema.Types.ObjectId,ref:"Job",required:true},
     status:{type:String,enum:{
-        values:["under_review","shortlisted","accepted","rejected"]
+        values:["pending","shortlisted","accepted","rejected"]
     },default:"under_review"},
 
 },{
