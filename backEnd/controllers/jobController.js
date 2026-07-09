@@ -205,7 +205,7 @@ const getJobById=async(req,res)=>{
 
 const updateJobById=async(req,res)=>{
     const {title,description,skillsRequired,responsibilities,salary,
-        experienceLevel,location,employmentType,workMode
+        experienceLevel,location,employmentType,workMode,status
     } = req.body;
     //validate provided fields
     //validate title
@@ -236,6 +236,7 @@ const updateJobById=async(req,res)=>{
             message:"Responsibilities must be an array"
         })
     }
+
     //validate salary
     if(salary!==undefined && salary<0){
         return res.status(400).json({
@@ -263,6 +264,12 @@ const updateJobById=async(req,res)=>{
             message:"Employment Type should not be empty"
         });
     }
+    if(status!==undefined && status!=="open" && status!=="closed"){
+        return res.status(400).json({
+            success:false,
+            message:"Status must be either open or closed"
+        })
+    }
     //validate workMode
     if(workMode!==undefined && workMode.trim()===""){
         return res.status(400).json({
@@ -275,7 +282,7 @@ const updateJobById=async(req,res)=>{
     skillsRequired === undefined && responsibilities === undefined &&
     salary === undefined && experienceLevel === undefined &&
     location === undefined && employmentType === undefined &&
-    workMode === undefined){
+    workMode === undefined && status===undefined ){
         return res.status(400).json({
             success:false,
             message:"Nothing to update"
@@ -305,13 +312,6 @@ const updateJobById=async(req,res)=>{
                 message:"Forbidden access"
             });
         }
-        //check closed/open
-        if(myJob.status==="closed"){
-            return res.status(400).json({
-                success:false,
-                message:"Closed jobs cannot be edited"
-            });
-        }
         //all checks provided, now update only the required fields
         //update title if provided
         if(title!==undefined){
@@ -336,6 +336,9 @@ const updateJobById=async(req,res)=>{
         //update workMode if provided
         if(workMode!==undefined){
             myJob.workMode = workMode;
+        }
+        if(status!==undefined){
+            myJob.status = status;
         }
         //update employmentType if provided
         if(employmentType!==undefined){
@@ -434,23 +437,37 @@ const getAllJobs=async(req,res)=>{
         }
         //check if skills filter exists
         if(skills){
-            const skillsArray = skills.split(",");
-            query.skillsRequired = {$in:skillsArray};
+            const skillsArray = skills
+                .split(",")
+                .map(skill => new RegExp(`^${skill.trim()}$`, "i"));
+
+            query.skillsRequired = {
+                $in: skillsArray
+            };
         }
 
         //check if location filter exists
-        if(skills){
-            query.location = location;
+        if(location){
+            query.location = {
+                $regex: `^${location}$`,
+                $options: "i"
+            };
         }
 
         //check if employmentType exists
         if(employmentType){
-            query.employmentType = employmentType;
+            query.employmentType = {
+                $regex: `^${employmentType}$`,
+                $options: "i"
+            };
         }
 
         //check if workMode
         if(workMode){
-            query.workMode = workMode;
+            query.workMode = {
+                $regex: `^${workMode}$`,
+                $options: "i"
+            };
         }
         //check if experienceLevel exists
         if(experienceLevel){
@@ -484,7 +501,7 @@ const getAllJobs=async(req,res)=>{
             message:"All Jobs fetched successfully",
             jobs : jobs,
             pagination:{
-                pages,
+                page,
                 limit,
                 totalJobs,
                 totalPages,

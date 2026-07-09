@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Company = require("../models/Company");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 
 let session; //to create mongodb sessions
@@ -155,6 +155,7 @@ const login = async(req,res)=>{
             userId: user._id,
             role : user.role
         }
+        console.log("Session after login:",req.session);
 
         return res.status(200).json({
             success:true,

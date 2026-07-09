@@ -36,7 +36,7 @@ const getMyProfile=async(req,res)=>{
 }
 
 const updateProfile=async(req,res)=>{
-    const {fullName,phoneNumber,profilePhoto,bio,skills,resume} = req.body;
+    const {fullName,phoneNumber,bio,skills} = req.body;
     //validate fullName
     if(fullName && fullName.trim()===""){
         return res.status(400).json({
@@ -67,7 +67,7 @@ const updateProfile=async(req,res)=>{
     }
     //check if no updates
     if(fullName === undefined && phoneNumber === undefined && bio === undefined &&
-    skills === undefined && profilePhoto === undefined && resume === undefined){
+    skills === undefined ){
         return res.status(400).json({
             success:false,
             message:"Nothing to update"
@@ -94,10 +94,7 @@ const updateProfile=async(req,res)=>{
         if(phoneNumber!==undefined){
             myUser.phoneNumber = phoneNumber;
         }
-        //update profilePhoto if provided
-        if(profilePhoto!==undefined){
-            myUser.profilePhoto = profilePhoto;
-        }
+        
         //update bio if provided
         if(bio!==undefined){
             myUser.bio = bio;
@@ -106,10 +103,7 @@ const updateProfile=async(req,res)=>{
         if(skills!==undefined){
             myUser.skills = skills;
         }
-        //update resume if provided
-        if(resume!==undefined){
-            myUser.resume = resume;
-        }
+        
         await myUser.save();
         res.status(200).json({
             success:true,
@@ -136,4 +130,77 @@ const updateProfile=async(req,res)=>{
     }
 }
 
-module.exports = {getMyProfile,updateProfile};
+const updateProfilePhoto = async(req,res)=>{
+    const userId = req.user.userId;
+    try{
+        const myUser = await User.findById(userId);
+        //user not found
+        if(!myUser){
+            return res.status(404).json({
+                success:false,
+                message:"User not found"
+            });
+        }
+        //no file uploaded
+        if(!req.file){
+            return res.status(400).json({
+                success:false,
+                message:"No profile photo uploaded"
+            });
+        }
+        myUser.profilePhoto = req.file.path;
+        await myUser.save();
+        return res.status(200).json({
+            success:true,
+            message:"Profile photo updated successfully",
+            user: {
+                id:myUser._id,
+                profilePhoto : myUser.profilePhoto
+            }
+        });
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            success:false,
+            message:"Internal server error"
+        });
+    }
+}
+
+const updateResume = async(req,res)=>{
+    const userId = req.user.userId;
+    try{
+        const myUser = await User.findById(userId);
+        //user not found
+        if(!myUser){
+            return res.status(404).json({
+                success:false,
+                message:"User not found"
+            });
+        }
+        //no file uploaded
+        if(!req.file){
+            return res.status(400).json({
+                success:false,
+                message:"No resume uploaded"
+            });
+        }
+        myUser.resume = req.file.path;
+        await myUser.save();
+        return res.status(200).json({
+            success:true,
+            message:"Resume updated successfully",
+            user: {
+                id:myUser._id,
+                resume : myUser.resume
+            }
+        });
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            success:false,
+            message:"Internal server error"
+        });
+    }
+}
+module.exports = {getMyProfile,updateProfile,updateProfilePhoto,updateResume};

@@ -1,6 +1,7 @@
 const Application = require("../models/Applications");
 const Job = require("../models/Job");
 const User = require("../models/User");
+const mongoose = require("mongoose");
 
 const applyJobById=async(req,res)=>{
     const jobId = req.params.jobId;
@@ -46,7 +47,7 @@ const applyJobById=async(req,res)=>{
         //create application
         const myApplication = await Application.create({
             applicant : userId,
-            job : jobid,
+            job : jobId,
             status : "pending"
         });
         return res.status(201).json({
@@ -60,7 +61,7 @@ const applyJobById=async(req,res)=>{
             }
         });
     }catch(err){
-        console.log(error);
+        console.log(err);
         return res.status(500).json({
             success:false,
             message:"Internal sever error"

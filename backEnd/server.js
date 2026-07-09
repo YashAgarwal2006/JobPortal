@@ -12,9 +12,13 @@ const applicationRoutes = require("./routes/applicationRoutes");
 const session = require("express-session");
 
 const app = express();
-
+app.use(cors());
 //midllewares
 app.use(express.json());
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
 
 app.use(session({
     secret : process.env.SESSION_SECRET,
@@ -33,7 +37,7 @@ app.use("/company",companyRoutes);
 app.use("/job",jobRoutes);
 app.use("/application",applicationRoutes);
 
-app.use(cors());
+
 
 //test route
 app.get("/",(req,res)=>{
