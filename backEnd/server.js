@@ -12,7 +12,10 @@ const applicationRoutes = require("./routes/applicationRoutes");
 const session = require("express-session");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials: true,
+}));
 //midllewares
 app.use(express.json());
 app.use((req, res, next) => {
