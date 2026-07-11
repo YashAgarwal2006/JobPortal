@@ -18,9 +18,7 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const credentials = {
-      email,password
-    };
+    const credentials = {email,password};
     try{
       const data = await login(credentials);
       if(data.user.role==="candidate"){

@@ -25,6 +25,20 @@ export function AuthProvider({children}){
         }
     };
 
+    //signup
+    const signup=async(userData)=>{
+        try{
+            const data = await authApi.signup(userData);
+            setUser(data.user);
+            setIsAuthenticated(true);
+            return data;
+        }catch(err){
+            throw err.response?.data || {
+                message:"Something went wrong"
+            };
+        }
+    }
+    
     //login
     const login=async(credentials)=>{
         try{
@@ -51,13 +65,14 @@ export function AuthProvider({children}){
 
     //run checkAuth only during start
     useEffect(() => {
-        checkAuth();
+        checkAuth();   //check if user was logged in from a previous visit
     }, [])
     
     return (
+        
         <AuthContext.Provider value={{
-            user,isAuthenticated,loading,login,logout,checkAuth
-        }}>
+            user,isAuthenticated,loading,signup,login,logout,checkAuth
+        }}>  
             {children}
         </AuthContext.Provider>
     )
