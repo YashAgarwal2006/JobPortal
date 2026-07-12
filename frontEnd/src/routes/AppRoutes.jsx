@@ -20,6 +20,8 @@ import RecruiterProfile from "../pages/recruiter/RecruiterProfile";
 import ProtectedRoute from '../components/ProtectedRoute';
 import PublicRoute from '../components/PublicRoute';
 
+import Layout from '../layouts/Layout';
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -36,58 +38,34 @@ const AppRoutes = () => {
         } />
 
         {/* Candidate paths*/}
-        <Route path='/candidate/dashboard' element={
-          <ProtectedRoute roles={["candidate"]}>
-            <CandidateDashboard/>
-          </ProtectedRoute>
-        } />
-        <Route path='/candidate/profile' element={
-          <ProtectedRoute roles={["candidate"]}>
-            <CandidateProfile/>
-          </ProtectedRoute>
-        } />
-        <Route path='/candidate/jobs' element={
-          <ProtectedRoute roles={["candidate"]}>
-            <Jobs/>
-          </ProtectedRoute>
-        } />
-        <Route path='/candidate/applications' element={
-          <ProtectedRoute roles={["candidate"]}>
-            <Applications/>
-          </ProtectedRoute>
-        } />
+        <Route
+            element={
+                <ProtectedRoute roles={["candidate"]}>
+                    <Layout />
+                </ProtectedRoute>
+            }
+        >
+            <Route path="/candidate/dashboard" element={<CandidateDashboard />} />
+            <Route path="/candidate/profile" element={<CandidateProfile />} />
+            <Route path="/candidate/jobs" element={<Jobs />} />
+            <Route path="/candidate/applications" element={<Applications />} />
+        </Route>
 
         {/* Recruiter paths */}
-        <Route path='/recruiter/dashboard' element={
-          <ProtectedRoute roles={["recruiter"]}>
-            <RecruiterDashboard/>
-          </ProtectedRoute>
-        } />
-        <Route path='/recruiter/company' element={
-          <ProtectedRoute roles={["recruiter"]}>
-            <Company/>
-          </ProtectedRoute>
-        } />
-        <Route path='/recruiter/jobs' element={
-          <ProtectedRoute roles={["recruiter"]}>
-            <MyJobs/>
-          </ProtectedRoute>
-        } />
-        <Route path='/recruiter/post-job' element={
-          <ProtectedRoute roles={["recruiter"]}>
-            <PostJob/>
-          </ProtectedRoute>
-        } />
-        <Route path='/recruiter/applicants' element={
-          <ProtectedRoute roles={["recruiter"]}>
-            <Applicants/>
-          </ProtectedRoute>
-        } />
-        <Route path='/recruiter/profile' element={
-          <ProtectedRoute roles={["recruiter"]}>
-            <Applicants/>
-          </ProtectedRoute>
-        } />
+        <Route
+            element={
+                <ProtectedRoute roles={["recruiter"]}>
+                    <Layout />
+                </ProtectedRoute>
+            }
+        >
+            <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
+            <Route path="/recruiter/company" element={<Company />} />
+            <Route path="/recruiter/jobs" element={<MyJobs />} />
+            <Route path="/recruiter/post-job" element={<PostJob />} />
+            <Route path="/recruiter/applicants" element={<Applicants />} />
+            <Route path="/recruiter/profile" element={<RecruiterProfile />} />
+        </Route>
     </Routes>
   )
 }
