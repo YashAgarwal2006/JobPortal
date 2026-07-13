@@ -155,7 +155,15 @@ const updateProfilePhoto = async(req,res)=>{
             message:"Profile photo updated successfully",
             user: {
                 id:myUser._id,
-                profilePhoto : myUser.profilePhoto
+                fullName : myUser.fullName,
+                email : myUser.email,
+                role : myUser.role,
+                phoneNumber: myUser.phoneNumber,
+                profilePhoto : myUser.profilePhoto,
+                bio: myUser.bio,
+                skills : myUser.skills,
+                resume:myUser.resume,
+                company : myUser.company
             }
         });
     }catch(err){
@@ -192,7 +200,15 @@ const updateResume = async(req,res)=>{
             message:"Resume updated successfully",
             user: {
                 id:myUser._id,
-                resume : myUser.resume
+                fullName : myUser.fullName,
+                email : myUser.email,
+                role : myUser.role,
+                phoneNumber: myUser.phoneNumber,
+                profilePhoto : myUser.profilePhoto,
+                bio: myUser.bio,
+                skills : myUser.skills,
+                resume:myUser.resume,
+                company : myUser.company
             }
         });
     }catch(err){

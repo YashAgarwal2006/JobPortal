@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState,useEffect,useContext,createContext } from 'react'
 import * as authApi from "../api/authApi";
-
+import * as userApi from "../api/userApi";
 //Create a context
 const AuthContext = createContext();
 
@@ -63,6 +63,43 @@ export function AuthProvider({children}){
         }
     }
 
+    //update user profile
+    const updateProfile=async(userData)=>{
+        try{
+            const {user} = await userApi.updateProfile(userData);
+            setUser(user);
+            return user;
+        }catch(err){
+            throw err.response?.data || {
+                message:"Something went wrong. Please try again later"
+            }
+        }
+    }
+    //update resume
+    const updateResume=async(formData)=>{
+        try{
+            const {user} = await userApi.updateResume(formData);
+            setUser(user);
+            return user;
+        }catch(err){
+            throw err.response?.data || {
+                message:"Something went wrong. Please try again later"
+            }
+        }
+    }
+    //updateProfilePhoto
+    const updateProfilePhoto=async(formData)=>{
+        try{
+            const {user} = await userApi.updateProfilePhoto(formData);
+            setUser(user);
+            return user;
+        }catch(err){
+            throw err.response?.data || {
+                message:"Something went wrong. Please try again later"
+            }
+        }
+    }
+
     //run checkAuth only during start
     useEffect(() => {
         checkAuth();   //check if user was logged in from a previous visit
@@ -71,7 +108,8 @@ export function AuthProvider({children}){
     return (
         
         <AuthContext.Provider value={{
-            user,isAuthenticated,loading,signup,login,logout,checkAuth
+            user,isAuthenticated,loading,signup,login,logout,checkAuth,updateProfile
+            ,updateResume,updateProfilePhoto
         }}>  
             {children}
         </AuthContext.Provider>

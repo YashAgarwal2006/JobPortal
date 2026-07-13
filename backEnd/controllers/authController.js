@@ -164,7 +164,12 @@ const login = async(req,res)=>{
                 id:user._id,
                 fullName:user.fullName,
                 email:user.email,
-                role:user.role
+                role:user.role,
+                phoneNumber:user.phoneNumber,
+                profilePhoto:user.profilePhoto,
+                bio:user.bio,
+                skills:user.skills,
+                resume:user.resume,
             }
         });
         
