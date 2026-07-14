@@ -121,7 +121,7 @@ const getMyCompany = async(req,res)=>{
 
 const updateCompanyProfile=async(req,res)=>{
     console.log("Reached updateCompanyProfile")
-    const {companyName,description,website,location,logo} = req.body
+    const {companyName,description,website,location,logo,isActive} = req.body
     console.log(req.body);
     //validate companyname
     if(companyName!==undefined && companyName.trim()===""){
@@ -198,6 +198,10 @@ const updateCompanyProfile=async(req,res)=>{
         if(logo!==undefined){
             myCompany.logo = logo;
         }
+        //update isActive if present
+        if(isActive!==undefined){
+            myCompany.isActive = isActive;
+        }
         await myCompany.save();
         return res.status(200).json({
             success:true,
@@ -209,6 +213,7 @@ const updateCompanyProfile=async(req,res)=>{
                 website: myCompany.website,
                 location: myCompany.location,
                 logo: myCompany.logo,
+                isActive:myCompany.isActive
             }
         })
     }catch(err){
@@ -235,13 +240,23 @@ const toggleStatus=async(req,res)=>{
         return res.status(200).json({
             success:true,
             message:"Company status updated successfully",
-            isActive : myCompany.isActive
+            company : {
+                //return company details
+                id: myCompany._id,
+                companyName: myCompany.companyName,
+                description: myCompany.description,
+                website: myCompany.website,
+                location: myCompany.location,
+                logo: myCompany.logo,
+                isActive : myCompany.isActive
+            }
         })
     }catch(err){
         console.log(err);
         return res.status(500).json({
             success:false,
-            message:"Internal server error"
+            message:"Internal server error",
+            
         })
     }
 }
@@ -358,9 +373,15 @@ const updateCompanyLogo = async(req,res)=>{
         return res.status(200).json({
             success:true,
             message:"Company Logo updated successfully",
-            company:{
+            company : {
+                //return company details
                 id: myCompany._id,
-                logo : myCompany.logo
+                companyName: myCompany.companyName,
+                description: myCompany.description,
+                website: myCompany.website,
+                location: myCompany.location,
+                logo: myCompany.logo,
+                isActive : myCompany.isActive
             }
         });
     }catch(err){

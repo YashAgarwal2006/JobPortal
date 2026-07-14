@@ -5,7 +5,7 @@ import { updateProfilePhoto } from '../../api/userApi';
 
 
 const CandidateProfile = () => {
-  const { user, loading, updateProfile, updateResume } = useAuth();
+  const { user, loading, updateProfile, updateResume,updateProfilePhoto } = useAuth();
   const [profileData, setProfileData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
