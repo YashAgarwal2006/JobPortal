@@ -50,6 +50,7 @@ const applyJobById=async(req,res)=>{
             job : jobId,
             status : "pending"
         });
+        myJob.applicationCount+=1;
         return res.status(201).json({
             success:true,
             message:"Application submitted successfully",

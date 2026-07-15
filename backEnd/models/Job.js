@@ -18,7 +18,9 @@ const JobSchema = new mongoose.Schema({
     postedBy:{type:mongoose.Schema.Types.ObjectId,ref:"User",required:true},
     workMode:{type:String,enum:{
         values:["remote","hybrid","onsite"]
-    },required:true,default:"onsite"}
+    },required:true,default:"onsite"},
+    applicationCount: {type: Number,default: 0,min: 0
+}
 },{
     timestamps:true
 });
