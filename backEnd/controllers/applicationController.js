@@ -51,6 +51,7 @@ const applyJobById=async(req,res)=>{
             status : "pending"
         });
         myJob.applicationCount+=1;
+        await myJob.save();
         return res.status(201).json({
             success:true,
             message:"Application submitted successfully",
@@ -125,6 +126,12 @@ const getApplicationsByJobId=async(req,res)=>{
         const allApplications = await Application.find({job:jobId}).populate("applicant","fullName email phoneNumber profilePhoto bio skills resume").sort({createdAt:-1});
         return res.status(200).json({
             success:true,
+            job: {
+                id: myJob._id,
+                title: myJob.title,
+                applicationCount: myJob.applicationCount,
+                status: myJob.status
+            },
             applications: allApplications
         });
         }catch(err){
@@ -174,6 +181,7 @@ const updateStatus = async(req,res)=>{
         //update status and save
         myApplication.status = newStatus;
         await myApplication.save();
+        await myApplication.populate("applicant","fullName email phoneNumber profilePhoto bio skills resume")
         return res.status(200).json({
             success:true,
             message:"Application updated successfully",
