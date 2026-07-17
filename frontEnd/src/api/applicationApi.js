@@ -19,3 +19,8 @@ export const updateStatus = async(applicationId,newStatus)=>{
     const {data} = await api.put(`/application/${applicationId}`,{newStatus});
     return data;
 }
+
+export const getRecentApplications = async()=>{
+    const {data} = await api.get("/application/recent");
+    return data;
+}

@@ -129,7 +129,8 @@ const postJob = async (req, res) => {
                 company: myJob.company,
                 postedBy: myJob.postedBy,
                 workMode: myJob.workMode,
-                applicationCount: myJob.applicationCount
+                applicationCount: myJob.applicationCount,
+                createdAt:myJob.createdAt
             }
         })
     } catch (err) {
@@ -163,7 +164,8 @@ const getMyJobs = async (req, res) => {
                 employmentType: job.employmentType,
                 workMode: job.workMode,
                 status: job.status,
-                applicationCount: job.applicationCount
+                applicationCount: job.applicationCount,
+                createdAt : job.createdAt
             }))
         });
 
@@ -211,7 +213,8 @@ const getJobById = async (req, res) => {
                 status: myJob.status,
                 company: myJob.company,
                 workMode: myJob.workMode,
-                applicationCount: myJob.applicationCount
+                applicationCount: myJob.applicationCount,
+                createdAt:myJob.createdAt
             }
         });
     } catch (err) {
@@ -390,7 +393,8 @@ const updateJobById = async (req, res) => {
                 status: myJob.status,
                 company: myJob.company,
                 workMode: myJob.workMode,
-                applicationCount: myJob.applicationCount
+                applicationCount: myJob.applicationCount,
+                createdAt : myJob.createdAt
             }
         })
     } catch (err) {

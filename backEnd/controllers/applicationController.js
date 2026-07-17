@@ -195,4 +195,37 @@ const updateStatus = async(req,res)=>{
         });
     }
 }
-module.exports = {applyJobById,getAllApplications,getApplicationsByJobId,updateStatus};
+
+const getRecentApplications=async(req,res)=>{
+    const userId = req.user.userId;
+    try{
+        const myJobs = await Job.find({postedBy:userId},"_id");
+        //no jobs found
+        if(myJobs.length===0){
+            return res.status(200).json({
+                success:true,
+                message:"No jobs posted yet",
+                applications:[]
+            });
+        }
+        const jobIds = myJobs.map(job => job._id);
+        const recentApplications = await Application.find({job:{$in:jobIds}})
+        .populate("applicant","fullName email profilePhoto")
+        .populate("job","title")
+        .sort({createdAt:-1})
+        .limit(5);
+
+        return res.status(200).json({
+            success:true,
+            message:"Recent applications fetched successfully",
+            applications : recentApplications
+        });
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            success:false,
+            message:"Internal server error"
+        });
+    }
+}
+module.exports = {applyJobById,getAllApplications,getApplicationsByJobId,updateStatus,getRecentApplications};
