@@ -105,6 +105,7 @@ const updateProfile=async(req,res)=>{
         }
         
         await myUser.save();
+        await myUser.populate("company");
         res.status(200).json({
             success:true,
             message : "User Profile updated successfully",
@@ -150,6 +151,7 @@ const updateProfilePhoto = async(req,res)=>{
         }
         myUser.profilePhoto = req.file.path;
         await myUser.save();
+        await myUser.populate("company");
         return res.status(200).json({
             success:true,
             message:"Profile photo updated successfully",

@@ -134,7 +134,7 @@ const login = async(req,res)=>{
 
     try{
         //2.check user by email
-        const user = await User.findOne({email});
+        const user = await User.findOne({email}).populate("company");
         if(!user){
             return res.status(401).json({
                 success:false,
@@ -170,6 +170,7 @@ const login = async(req,res)=>{
                 bio:user.bio,
                 skills:user.skills,
                 resume:user.resume,
+                company:user.company
             }
         });
         
