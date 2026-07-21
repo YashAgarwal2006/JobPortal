@@ -15,8 +15,8 @@ export const getJobById=async(jobId)=>{
     return data;
 }
 
-export const getAllJobs=async()=>{
-    const {data} = await api.get("/job");
+export const getAllJobs=async(filters)=>{
+    const {data} = await api.get("/job",{params:filters});
     return data;
 }
 

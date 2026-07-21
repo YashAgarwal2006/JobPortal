@@ -517,7 +517,7 @@ const getAllJobs = async (req, res) => {
         let skip = (page - 1) * limit;
 
         const totalJobs = await Job.countDocuments(query);
-        const jobs = await Job.find(query).sort({ createdAt: -1 })
+        const jobs = await Job.find(query).populate("company","companyName logo").sort({ createdAt: -1 })
             .skip(skip).limit(limit);
         const totalPages = Math.ceil(totalJobs / limit);
 
