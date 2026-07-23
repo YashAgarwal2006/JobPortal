@@ -9,14 +9,8 @@ const Applicants = () => {
   const [selectedStatuses, setSelectedStatuses] = useState({});
   const [error, setError] = useState("");
   const { jobId } = useParams();
-
-  if (!job) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   const handleStatusSelect = (applicationId, status) => {
     setSelectedStatuses((prev) => ({
@@ -27,12 +21,19 @@ const Applicants = () => {
   const handleStatusChange = async (applicationId, newStatus) => {
     try {
       setError("");
+      setMessage("");
       const { updatedApplication } = await updateStatus(applicationId, newStatus);
       setApplications(prev =>
         prev.map(application =>
           application._id === applicationId ? updatedApplication : application
         )
       );
+      setMessage(`✅ Application status updated to ${newStatus}.`);
+      setMessageType("success");
+
+      setTimeout(() => {
+        setMessage("");
+      }, 2500);
     } catch (err) {
       setError(err.message || "Unable to update application status");
     }
@@ -53,6 +54,14 @@ const Applicants = () => {
     fetchApplications();
   }, [jobId])
 
+  if (!job) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
@@ -62,6 +71,17 @@ const Applicants = () => {
             Applicants
           </h1>
         </div>
+
+        {message && (
+          <div
+            className={`mb-6 rounded-lg px-5 py-4 text-center font-medium shadow-sm ${messageType === "success"
+                ? "bg-green-50 border border-green-200 text-green-700"
+                : "bg-blue-50 border border-blue-200 text-blue-700"
+              }`}
+          >
+            {message}
+          </div>
+        )}
 
         {/*Job Summary Card */}
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
@@ -106,32 +126,32 @@ const Applicants = () => {
                   <img src={application.applicant.profilePhoto} alt="Profile" className="w-20 h-20 rounded-full object-cover border" />
 
                   <div>
-                    <h2 className="text-xl font-bold text-gray-800">{application.applicant.fullName}</h2>
+                    <h2 className="text-xl font-bold text-gray-800">{application.fullName}</h2>
                     <p className="text-gray-500 text-sm">Applied on{" "}{new Date(application.createdAt).toLocaleDateString()}</p>
-                    <p className='text-gray-600'>{application.applicant.email}</p>
-                    <p className='text-gray-600'>{application.applicant.phoneNumber}</p>
+                    <p className='text-gray-600'>{application.email}</p>
+                    <p className='text-gray-600'>{application.phoneNumber}</p>
                   </div>
                 </div>
                 {/* Bio */}
                 <div className='mt-6'>
                   <h3 className='font-semibold text-lg mb-2'>Bio</h3>
-                  <p className='text-gray-700'>{application.applicant.bio}</p>
+                  <p className='text-gray-700'>{application.bio}</p>
                 </div>
 
                 {/*Skills */}
                 <div className='mt-6'>
                   <h3 className='font-semibold text-lg mb-2'>Skills</h3>
                   <div className='flex flex-wrap gap-2'>
-                    {application.applicant.skills.map((skill, index) => (
+                    {application.skills.map((skill, index) => (
                       <span key={index} className='bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm'>{skill}</span>
                     ))}
                   </div>
                 </div>
 
                 {/*Resume */}
-                {application.applicant.resume ? (
+                {application.resume ? (
                   <a
-                    href={application.applicant.resume}
+                    href={application.resume}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-block bg-gray-800 hover:bg-black text-white px-4 py-2 rounded-lg transition"

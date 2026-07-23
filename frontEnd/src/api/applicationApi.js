@@ -1,7 +1,12 @@
 import api from "./axios";
 
-export const applyJobById=async(jobId)=>{
-    const {data} = await api.post(`/application/${jobId}`);
+export const applyJobById=async(jobId,formData)=>{
+    const {data} = await api.post(`/application/${jobId}`,
+        formData , 
+        {headers:{
+            "Content-Type":"multipart/form-data"
+        }}
+    );
     return data;
 }
 
@@ -22,5 +27,10 @@ export const updateStatus = async(applicationId,newStatus)=>{
 
 export const getRecentApplications = async()=>{
     const {data} = await api.get("/application/recent");
+    return data;
+}
+
+export const checkApplicationStatus=async(jobId)=>{
+    const {data} = await api.get(`/application/check/${jobId}`);
     return data;
 }

@@ -1,5 +1,6 @@
 const isAuthenticated=(req,res,next)=>{
     console.log("Reached isAuthenticated");
+    console.log(req.session);
     if(!req.session.user){
         return res.status(401).json({
             success:false,
@@ -12,6 +13,7 @@ const isAuthenticated=(req,res,next)=>{
 
 const isRecruiter=(req,res,next)=>{
     console.log("Reached isRecruiter");
+    console.log(req.user)
     if(req.user.role !== "recruiter"){
         return res.status(403).json({
             success:false,

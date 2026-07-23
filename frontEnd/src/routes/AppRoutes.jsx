@@ -9,6 +9,7 @@ import CandidateDashboard from "../pages/candidate/CandidateDashboard";
 import CandidateProfile from "../pages/candidate/CandidateProfile";
 import Jobs from "../pages/candidate/Jobs";
 import Applications from "../pages/candidate/Applications";
+import ApplyJob from '../pages/candidate/ApplyJob';
 
 import RecruiterDashboard from "../pages/recruiter/RecruiterDashboard";
 import PostJob from "../pages/recruiter/PostJob";
@@ -50,6 +51,7 @@ const AppRoutes = () => {
             <Route path="/candidate/profile" element={<CandidateProfile />} />
             <Route path="/candidate/jobs" element={<Jobs />} />
             <Route path="/candidate/applications" element={<Applications />} />
+            <Route path="/candidate/apply/:jobId" element={<ApplyJob />} />
         </Route>
 
         {/* Recruiter paths */}

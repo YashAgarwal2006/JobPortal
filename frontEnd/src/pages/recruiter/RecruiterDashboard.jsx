@@ -211,7 +211,7 @@ const RecruiterDashboard = () => {
                           className="w-20 h-20 rounded-full object-cover border"
                         />
                         <div>
-                          <h2 className="text-xl font-bold text-gray-800">{application.applicant.fullName}</h2>
+                          <h2 className="text-xl font-bold text-gray-800">{application.fullName}</h2>
 
                           <p className="text-gray-500 text-sm">Applied on{" "}
                             {new Date(application.createdAt).toLocaleDateString("en-IN", {
