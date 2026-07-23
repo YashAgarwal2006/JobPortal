@@ -128,8 +128,11 @@ const getAllApplications = async (req, res) => {
         const myApplications = await Application.find({ applicant: userId })
             .populate({
                 path: "job",
+                select:"title location employmentType workMode salary company",
                 populate: {
-                    path: "company"
+                    path: "company",
+                    select : "companyName logo"
+
                 }
             }).sort({ createdAt: -1 });
         return res.status(200).json({

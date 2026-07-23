@@ -37,7 +37,7 @@ const ApplyJob = () => {
   }
   //to finish applying for the job
   const handleApply = async () => {
-    
+
     try {
       setError("");
       const data = new FormData();
@@ -48,10 +48,10 @@ const ApplyJob = () => {
       data.append("skills", formData.skills);
       if (selectedResume) {
         data.append("resume", selectedResume);
-      }else{
-        data.append("existingResume",user.resume);
+      } else {
+        data.append("existingResume", user.resume);
       }
-      
+
       await applyJobById(jobId, data);
       setMessage("🎉 Application submitted successfully! Redirecting to your dashboard...");
       setMessageType("success");
@@ -66,33 +66,33 @@ const ApplyJob = () => {
   }
   //import job details on page load
 
-  
+
   useEffect(() => {
-    
+
 
     if (loading || !user) {
-      
+
       return;
     }
-    
+
     const initializePage = async () => {
       try {
-        
+
         const { alreadyApplied } = await checkApplicationStatus(jobId);
-        
+
         setAlreadyApplied(alreadyApplied);
         if (alreadyApplied) {
           setMessage("You have already applied for this job. Redirecting to your applications...");
           setMessageType("info")
           setTimeout(() => {
             navigate("/candidate/applications");
-          }, 2000);
+          }, 3000);
           return;
         }
 
-        
+
         const { job } = await getJobById(jobId);
-        
+
         setJobDetails(job);
 
         setFormData({
@@ -112,8 +112,33 @@ const ApplyJob = () => {
   }, [user, jobId, loading, navigate])
 
   //at start
-  if (loading || !jobDetails) {
-    
+  if (loading) {
+    return (
+      <div className='min-h-screen flex justify-center items-center'>
+        Loading...
+      </div>
+    )
+  }
+  if (alreadyApplied) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+          <h2 className="text-2xl font-bold text-blue-700 mb-3">
+            Already Applied
+          </h2>
+
+          <p className="text-gray-600">
+            You have already applied for this job.
+          </p>
+
+          <p className="text-sm text-gray-500 mt-3">
+            Redirecting to your applications...
+          </p>
+        </div>
+      </div>
+    );
+  }
+  if (!jobDetails) {
     return (
       <div className='min-h-screen flex justify-center items-center'>
         Loading...
@@ -335,7 +360,7 @@ const ApplyJob = () => {
             )}
 
             <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-              <input required type="file" accept=".pdf" onChange={handleResumeChange} 
+              <input required type="file" accept=".pdf" onChange={handleResumeChange}
                 className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4
                  file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700
                  file:font-semibold hover:file:bg-blue-100"
